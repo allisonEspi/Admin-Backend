@@ -11,12 +11,16 @@ class Categoria (models.Model):
     def  __str__(self):
         return self.tipo
 class Local (models.Model):
+    adminLocal=models.ForeignKey('auth.User',on_delete=models.CASCADE)
+    categoria=models.ForeignKey('Categoria',on_delete=models.CASCADE)
     id_local=models.AutoField(primary_key=True )
     nombreComercial= models.CharField(max_length=50)
     descripcion = models.CharField(max_length=180)
     srcLogo= models.ImageField(verbose_name="Imagen")
     direccion= models.CharField(max_length=50)
     categoria= models.CharField(max_length=50)
+    longitud = models.DecimalField(max_digits=8, decimal_places=3)
+    lat= models.DecimalField(max_digits=8, decimal_places=3) 
     like=models.IntegerField()
     estrella=models.IntegerField()
     vistas=models.IntegerField()
