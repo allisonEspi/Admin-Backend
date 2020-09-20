@@ -19,14 +19,23 @@ from rest_framework.routers import DefaultRouter
 from django.urls import include, path
 from rest_framework import routers
 from productos import views
-from productos.views import EscaneosViewSet,CategoriaViewSet,LocalViewSet,PermisoViewSet
+from productos.views import CategoriaViewSet,ComentarioViewSet,EscaneosViewSet,FavoritoViewSet,GaleriaViewSet,LocalViewSet,NotificacionesViewSet,PermisoViewSet,RolViewSet,RolpermisoViewSet,TelefonoViewSet,UsuarioViewSet
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
-router.register(r'Escaneos', EscaneosViewSet)
-router.register(r'Categoria', CategoriaViewSet)
-router.register(r'Local', LocalViewSet)
-router.register(r'Permiso', PermisoViewSet)
+router.register(r'categoria', CategoriaViewSet)
+router.register(r'comentario', ComentarioViewSet)
+router.register(r'escaneo', EscaneosViewSet)
+router.register(r'favorito', FavoritoViewSet)
+router.register(r'galeria', GaleriaViewSet)
+router.register(r'local', LocalViewSet)
+router.register(r'permiso', PermisoViewSet)
+router.register(r'notificaciones', NotificacionesViewSet)
+router.register(r'rol', RolViewSet)
+router.register(r'rolpermiso', RolpermisoViewSet)
+router.register(r'telefono', TelefonoViewSet)
+router.register(r'usuario', UsuarioViewSet)
+
 
 
 

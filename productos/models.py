@@ -1,41 +1,128 @@
 from django.db import models
+class Categoria(models.Model):
+     id_categoria = models.AutoField(db_column='id_Categoria', primary_key=True)  # Field name made lowercase.
+     tipo = models.CharField(max_length=12, blank=True, null=True)
+     descripcion = models.CharField(max_length=50, blank=True, null=True)
+     class Meta:
+        managed = False
+        db_table = 't_categoria'
+class Comentario(models.Model):
+    id_comentario = models.IntegerField(db_column='id_Comentario', primary_key=True)  # Field name made lowercase.
+    id_local = models.IntegerField(db_column='id_Local', blank=True, null=True)  # Field name made lowercase.
+    id_usuario = models.IntegerField(db_column='id_Usuario', blank=True, null=True)  # Field name made lowercase.
+    comentario = models.CharField(max_length=100, blank=True, null=True)
+    fecha = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 't_comentario'
+class Escaneos(models.Model):
+    id_escaneos = models.AutoField(db_column='id_Escaneos', primary_key=True)  # Field name made lowercase.
+    fecha = models.DateTimeField(blank=True, null=True)
+    lugar = models.CharField(max_length=100, blank=True, null=True)
+    celular = models.IntegerField(blank=True, null=True)
+    id_usuario = models.IntegerField(db_column='id_Usuario', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 't_escaneos'
+class Favorito(models.Model):
+    id_favorito = models.AutoField(db_column='id_Favorito', primary_key=True)  # Field name made lowercase.
+    id_local = models.IntegerField(db_column='id_Local')  # Field name made lowercase.
+    id_usuario = models.CharField(db_column='id_Usuario', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    fecha = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 't_favorito'
 
 
-class Categoria (models.Model):
-    id_categoria=models.AutoField(primary_key=True )
-    tipo= models.CharField(max_length=50)
-    descripcion = models.CharField(max_length=100)
-    creado = models.DateField(auto_now_add=True)
-    editado = models.DateField(auto_now=True)
+class Galeria(models.Model):
+    id_contenido = models.AutoField(db_column='id_Contenido', primary_key=True)  # Field name made lowercase.
+    id_local = models.IntegerField(db_column='id_Local', blank=True, null=True)  # Field name made lowercase.
+    src_path = models.ImageField(verbose_name="Imagen" , db_column='src_Path', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    class Meta:
+        managed = False
+        db_table = 't_galeria'
 
-    def  __str__(self):
-        return self.tipo
-class Local (models.Model):
+class Local(models.Model):
+    id_local = models.IntegerField(db_column='id_Local', primary_key=True)  # Field name made lowercase.
+    nombre_comercial = models.CharField(db_column='nombre_Comercial', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    descripcion = models.CharField(max_length=100, blank=True, null=True)
+    src_logo = models.ImageField(verbose_name="Imagen",db_column='src_Logo', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    likes = models.IntegerField(blank=True, null=True)
+    estrellas = models.IntegerField(blank=True, null=True)
+    vistas = models.IntegerField(blank=True, null=True)
+    direccion = models.CharField(max_length=25, blank=True, null=True)
+    categoria = models.CharField(max_length=25, blank=True, null=True)
     adminLocal=models.ForeignKey('auth.User',on_delete=models.CASCADE)
-    categoria=models.ForeignKey('Categoria',on_delete=models.CASCADE)
-    id_local=models.AutoField(primary_key=True )
-    nombreComercial= models.CharField(max_length=50)
-    descripcion = models.CharField(max_length=180)
-    srcLogo= models.ImageField(verbose_name="Imagen")
-    direccion= models.CharField(max_length=50)
-    longitud = models.CharField(max_length=50)
-    latitud= models.CharField(max_length=50)
-    like=models.IntegerField()
-    estrella=models.IntegerField()
-    vistas=models.IntegerField()
-    def  __str__(self):
-        return self.nombreComercial
-class Escaneos (models.Model):
-    id_Escaneos=models.AutoField(primary_key=True )
-    fecha=models.DateField(blank=True, null=True)
-    lugar = models.CharField(max_length=55)
-    celular=models.IntegerField()
-    def  __str__(self):
-        return self.id_Escaneos 
-class Permiso (models.Model):
-    id_Permiso=models.AutoField(primary_key=True )
-    descripcion = models.CharField(max_length=180)
-    tipo=models.CharField(max_length=20)
-    
-    def  __str__(self):
-        return self.id_Permiso 
+    # admin_local = models.CharField(db_column='admin_Local', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    latitud = models.CharField(max_length=50, blank=True, null=True)
+    longitud = models.CharField(max_length=50, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 't_local'
+
+
+class Notificaciones(models.Model):
+    id_notificacion = models.IntegerField(db_column='id_Notificacion', primary_key=True)  # Field name made lowercase.
+    alcance = models.CharField(max_length=20, blank=True, null=True)
+    notificacion = models.CharField(max_length=50, blank=True, null=True)
+    id_usuario = models.IntegerField(db_column='id_Usuario', blank=True, null=True)  # Field name made lowercase.
+    fecha = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 't_notificaciones'
+
+
+class Permiso(models.Model):
+    id_permiso = models.AutoField(db_column='id_Permiso', primary_key=True)  # Field name made lowercase.
+    tipo = models.CharField(max_length=20, blank=True, null=True)
+    descripcion = models.CharField(max_length=50, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 't_permiso'
+class Rol(models.Model):
+    id_rol = models.AutoField(db_column='id_Rol', primary_key=True)  # Field name made lowercase.
+    tipo = models.CharField(max_length=100, blank=True, null=True)
+    descripcion = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 't_rol'
+
+
+class Rolpermiso(models.Model):
+    id_rolpermiso = models.AutoField(db_column='id_RolPermiso', primary_key=True)  # Field name made lowercase.
+    id_rol = models.IntegerField(db_column='id_Rol', blank=True, null=True)  # Field name made lowercase.
+    id_permiso = models.IntegerField(db_column='id_Permiso', blank=True, null=True)  # Field name made lowercase.
+    fecha = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 't_rolpermiso'
+
+
+class Telefono(models.Model):
+    id_telefono = models.AutoField(db_column='id_Telefono', primary_key=True)  # Field name made lowercase.
+    id_local = models.IntegerField(db_column='id_Local', blank=True, null=True)  # Field name made lowercase.
+    telefono = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 't_telefono'
+
+
+class Usuario(models.Model):
+    email = models.CharField(primary_key=True, max_length=20)
+    nombres = models.CharField(max_length=100, blank=True, null=True)
+    apellidos = models.CharField(max_length=100, blank=True, null=True)
+    contrasena = models.CharField(max_length=12, blank=True, null=True)
+    src_imagen = models.ImageField(verbose_name="Imagen",db_column='src_Imagen', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    id_rol = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 't_usuario'
