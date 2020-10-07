@@ -33,6 +33,7 @@ class Usuario(models.Model):
     nombres = models.CharField(max_length=50, blank=True, null=True)
     apellidos = models.CharField(max_length=50, blank=True, null=True)
     contrasena = models.CharField(max_length=12, blank=True, null=True)
+    telefono = models.IntegerField(blank=True, null=True)
     src_imagen = models.ImageField(verbose_name="Imagen",db_column='src_Imagen', max_length=200, blank=True, null=True)  # Field name made lowercase.
     id_rol = models.IntegerField(blank=True, null=True)
     def __str__(self):
@@ -74,7 +75,8 @@ class Escaneos(models.Model):
         verbose_name_plural = "Escaneoss"
 
 class Local(models.Model):
-    id_local = models.IntegerField(db_column='id_Local', primary_key=True)  # Field name made lowercase.
+    id_local =models.AutoField(db_column='id_Local', primary_key=True)
+     #models.IntegerField(db_column='id_Local', primary_key=True)  # Field name made lowercase.
     nombre_comercial = models.CharField(db_column='nombre_Comercial', max_length=100, blank=True, null=True)  # Field name made lowercase.
     descripcion = models.CharField(max_length=100, blank=True, null=True)
     src_logo = models.ImageField(verbose_name="Imagen",db_column='src_Logo', max_length=100, blank=True, null=True)  # Field name made lowercase.
@@ -94,8 +96,6 @@ class Categoria(models.Model):
      id_categoria = models.AutoField(db_column='id_Categoria', primary_key=True)  # Field name made lowercase.
      tipo = models.CharField(max_length=12, blank=True, null=True)
      descripcion = models.CharField(max_length=50, blank=True, null=True)
-     def __str__(self):
-        return self.id_categoria
      class Meta:
         verbose_name = 'Categoria'
         verbose_name_plural = "Categorias"

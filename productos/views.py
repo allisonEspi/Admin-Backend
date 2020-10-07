@@ -2,6 +2,8 @@ from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from django.shortcuts import redirect
 from django.shortcuts import render
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from rest_framework.response import Response
 from django.contrib.auth import login as do_login
 from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -67,8 +69,24 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 def index(request):
 	 return render(request,'productos/index.html')
 
-def register(request):
-	return render(request,'productos/register.html')
+def tableList(request):
+	return render(request,'productos/tableList.html')
+def tablaLocal(request):
+        local=Local.objects.all()
+        contexto={'locales':local}
+        return render(request,'productos/tablaLocal.html', contexto)
+def tableCategoria(request):
+        categoria=Categoria.objects.all()
+        contexto={'categorias':categoria}
+        return render(request,'productos/tablaCategoria.html',contexto)
+def localDelete(request,id_local):
+        local=Local.objects.get(id_local=id_local)
+        local.delete()
+        return render(request,'productos/tablaLocal.html', {"locales":Local.objects.all()})
+def categoriaDelete(request,id_categoria):
+        categoria=Categoria.objects.get(id_categoria=id_categoria)
+        categoria.delete()
+        return render(request,'productos/tablaCategoria.html', {"categorias":Categoria.objects.all()})
 # ...
 @csrf_exempt
 def login(request):
@@ -110,3 +128,4 @@ def login(request):
 def logout_view(request):
     logout(request)
     return redirect('/')
+

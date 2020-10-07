@@ -18,7 +18,8 @@ from rest_framework.routers import DefaultRouter
 from django.urls import include, path
 from rest_framework import routers
 from productos import views
-from productos.views import CategoriaViewSet,ComentarioViewSet,EscaneosViewSet,FavoritoViewSet,GaleriaViewSet,LocalViewSet,NotificacionesViewSet,PermisoViewSet,RolViewSet,RolpermisoViewSet,TelefonoViewSet,UsuarioViewSet
+from productos.views import *
+#from productos.views import CategoriaViewSet,ComentarioViewSet,EscaneosViewSet,FavoritoViewSet,GaleriaViewSet,LocalViewSet,NotificacionesViewSet,PermisoViewSet,RolViewSet,RolpermisoViewSet,TelefonoViewSet,UsuarioViewSet,tablaLocal
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
@@ -44,9 +45,14 @@ urlpatterns = [
     path('adminD/', include(router.urls)),
     path('', views.login, name="login"),
     path('index/', views.index, name="index"),
-    path('register/', views.register, name="register"),
+    path('tableList/', views.tableList, name="tableList"),
+    path('tablaLocal/', views.tablaLocal, name="tablaLocal"),
+    path('tablaLocal/(?P<id_local>)$', localDelete, name="localDelete"),
+    path('tablaCategoria/', views.tableCategoria, name="tablaCategoria"),
+    path('tablaCategoria/(?P<id_categoria>)$', categoriaDelete, name="categoriaDelete"),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('logout/', views.logout_view, name='logout')
+    
 ]
 
 urlpatterns += [
