@@ -123,14 +123,7 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/staticfiles/'
-STATIC_ROOT=os.path.join(BASE_DIR,'collected_static')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "staticfiles"),
-]
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
@@ -140,4 +133,13 @@ CORS_ALLOWED_ORIGINS = [
     "https://tonny.pythonanywhere.com",
     "http://localhost:8000",
     "http://localhost:8100"
+]
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.1/howto/static-files/
+
+STATIC_URL = '/staticfiles/'
+STATIC_ROOT=os.path.join(BASE_DIR,'collected_static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "staticfiles"),
 ]

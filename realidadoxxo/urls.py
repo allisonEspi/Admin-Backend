@@ -45,11 +45,15 @@ urlpatterns = [
     path('adminD/', include(router.urls)),
     path('', views.login, name="login"),
     path('index/', views.index, name="index"),
-    path('tableList/', views.tableList, name="tableList"),
+    path('tablaUsuario/', views.tablaUsuario, name="tablaUsuario"),
     path('tablaLocal/', views.tablaLocal, name="tablaLocal"),
     path('tablaLocal/(?P<id_local>)$', localDelete, name="localDelete"),
     path('tablaCategoria/', views.tableCategoria, name="tablaCategoria"),
     path('tablaCategoria/(?P<id_categoria>)$', categoriaDelete, name="categoriaDelete"),
+    path('tablaFavorito/', views.tableFavorito, name="tablaFavorito"),
+    path('registrarCategoria/', registrarCategoria, name="registarCategoria"),
+    path('registrarLocal/', registrarLocal, name="registrarLocal"),
+
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('logout/', views.logout_view, name='logout')
     

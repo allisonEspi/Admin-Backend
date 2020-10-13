@@ -69,8 +69,8 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 def index(request):
 	 return render(request,'productos/index.html')
 
-def tableList(request):
-	return render(request,'productos/tableList.html')
+def tablaUsuario(request):
+	return render(request,'productos/tablaUsuario.html')
 def tablaLocal(request):
         local=Local.objects.all()
         contexto={'locales':local}
@@ -79,6 +79,10 @@ def tableCategoria(request):
         categoria=Categoria.objects.all()
         contexto={'categorias':categoria}
         return render(request,'productos/tablaCategoria.html',contexto)
+def tableFavorito(request):
+        favorito=Favorito.objects.all()
+        contexto={'favoritos':favorito}
+        return render(request,'productos/tablaFavorito.html',contexto)
 def localDelete(request,id_local):
         local=Local.objects.get(id_local=id_local)
         local.delete()
@@ -87,6 +91,10 @@ def categoriaDelete(request,id_categoria):
         categoria=Categoria.objects.get(id_categoria=id_categoria)
         categoria.delete()
         return render(request,'productos/tablaCategoria.html', {"categorias":Categoria.objects.all()})
+def favoritoDelete(request,id_favorito):
+        favorito=Favorito.objects.get(id_favorito=id_favorito)
+        favorito.delete()
+        return render(request,'productos/tablaFavorito.html', {"favoritos":Favorito.objects.all()})
 # ...
 @csrf_exempt
 def login(request):
@@ -129,3 +137,23 @@ def logout_view(request):
     logout(request)
     return redirect('/')
 
+def registrarCategoria(request):
+        if request.method=='POST':
+                if(request.POST.get("tipo")!=None and request.POST.get("descripcion")!=None):
+                        categoria = Categoria(tipo=request.POST.get("tipo"),descripcion=request.POST.get("descripcion"))
+                        categoria.save()
+                        #return HttpResponse(status=200)
+                        return render(request, 'productos/crear/crearCategoria.html') 
+                return HttpResponse(status=404)
+        if request.method=='GET':
+                return render(request, 'productos/crear/crearCategoria.html') 
+def registrarLocal(request):
+        if request.method=='POST':
+                if(request.POST.get("vista")!=None and request.POST.get("direccion")!=None and request.POST.get("nombrec")!=None and request.POST.get("like")!=None and request.POST.get("descripcion")!=None):
+                        local = Local(vistas=request.POST.get("vista"),descripcion=request.POST.get("descripcion"),likes=request.POST.get("like"),direccion=request.POST.get("direccion"),nombre_comercial=request.POST.get("nombrec"))
+                        local.save()
+                        #return HttpResponse(status=200)
+                        return render(request, 'productos/crear/crearLocal.html') 
+                return HttpResponse(status=404)
+        if request.method=='GET':
+                return render(request, 'productos/crear/crearLocal.html') 

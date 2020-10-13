@@ -32,15 +32,10 @@
                             <td>{{o.tipo}}</td>
                             <td>{{o.descripcion}}</td>
                             <td>
-                                 <td>
                                 <form  name="myform{{o.id_categoria}}" action="{% url 'categoriaDelete' o.id_categoria %}">
                                     <input type="button" class="btn-table" id="{{id_categoria}}" class="btn" onclick="confirmationMessage('{{o.id_categoria}}')" value="Eliminar" >
                                </form>
-                            </td> <td>
-                                <form  name="myform{{o.id_categoria}}" action="{% url 'categoriaDelete' o.id_categoria %}">
-                                    <input type="button" class="btn-table" id="{{id_categoria}}" class="btn" onclick="confirmationMessage('{{o.id_categoria}}')" value="Eliminar" >
-                               </form>
-                            </td>
+                            </td> 
                        
                         </tr>
                         {% endfor %} 
