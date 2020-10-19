@@ -83,9 +83,18 @@ def tableFavorito(request):
         favorito=Favorito.objects.all()
         contexto={'favoritos':favorito}
         return render(request,'productos/tablaFavorito.html',contexto)
-def localDelete(request,id_local):
-        local=Local.objects.get(id_local=id_local)
-        local.delete()
+def tableTelefono(request):
+        telefono=Telefono.objects.all()
+        contexto={'telefonos':telefono}
+        return render(request,'productos/tablaTelefono.html',contexto)
+def tableGaleria(request):
+        galeria=Galeria.objects.all()
+        contexto={'galerias':galeria}
+        return render(request,'productos/tablaGaleria.html',contexto)
+def localDelete(request):
+        if request.method == "POST":
+                local=Local.objects.get(id_local=request.POST.get('local'))
+                local.delete()
         return render(request,'productos/tablaLocal.html', {"locales":Local.objects.all()})
 def categoriaDelete(request,id_categoria):
         categoria=Categoria.objects.get(id_categoria=id_categoria)
@@ -95,6 +104,14 @@ def favoritoDelete(request,id_favorito):
         favorito=Favorito.objects.get(id_favorito=id_favorito)
         favorito.delete()
         return render(request,'productos/tablaFavorito.html', {"favoritos":Favorito.objects.all()})
+def telefonoDelete(request,id_telefono):
+        telefono=Telefono.objects.get(id_telefono=id_telefono)
+        telefono.delete()
+        return render(request,'productos/tablaTelefono.html', {"telefonos":Telefono.objects.all()})
+def galeriaDelete(request,id_contenido):
+        galeria=Galeria.objects.get(id_contenido=id_contenido)
+        galeria.delete()
+        return render(request,'productos/tablaGaleria.html', {"galerias":Galeria.objects.all()})
 # ...
 @csrf_exempt
 def login(request):
@@ -132,11 +149,11 @@ def login(request):
 
     # Si llegamos al final renderizamos el formulario
     return render(request, "productos/login.html", {'form': form ,'mensaje':""})
-
+@login_required(login_url='/')
 def logout_view(request):
     logout(request)
     return redirect('/')
-
+@login_required(login_url='/')
 def registrarCategoria(request):
         if request.method=='POST':
                 if(request.POST.get("tipo")!=None and request.POST.get("descripcion")!=None):
@@ -157,3 +174,23 @@ def registrarLocal(request):
                 return HttpResponse(status=404)
         if request.method=='GET':
                 return render(request, 'productos/crear/crearLocal.html') 
+def editarLocal(request):
+        if request.method=='POST':
+                local=Local.objects.get(id_local=request.POST['local'])
+                if(request.POST['nombrec']!=None or request.POST['nombrec']!=''):
+                        local.nombre_comercial=request.POST['nombrec']
+                if(request.POST['descripcion']!=None or request.POST['descripcion']!=''):
+                        local.descripcion=request.POST['descripcion']   
+                if(request.POST['like']!=None or request.POST['like']!=''):
+                        local.likes=request.POST['like']   
+                if(request.POST['estrella']!=None or request.POST['estrella']!=''):
+                        local.estrellas=request.POST['estrella']   
+                if(request.POST['vista']!=None or request.POST['vista']!=''):
+                        local.vistas=request.POST['vista']
+                if(request.POST['direccion']!=None or request.POST['direccion']!=''):
+                        local.direccion=request.POST['direccion']
+                if(bool(request.FILES.get('imagen', False)) == True ):
+                        local.src_logo=request.FILES['imagen']
+                local.save()
+        return render(request,'productos/tablaLocal.html', {"locales":Local.objects.all()})
+   

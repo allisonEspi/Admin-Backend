@@ -17,6 +17,8 @@ from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 from django.urls import include, path
 from rest_framework import routers
+from django.conf.urls.static import static
+from django.conf import settings
 from productos import views
 from productos.views import *
 #from productos.views import CategoriaViewSet,ComentarioViewSet,EscaneosViewSet,FavoritoViewSet,GaleriaViewSet,LocalViewSet,NotificacionesViewSet,PermisoViewSet,RolViewSet,RolpermisoViewSet,TelefonoViewSet,UsuarioViewSet,tablaLocal
@@ -51,14 +53,20 @@ urlpatterns = [
     path('tablaCategoria/', views.tableCategoria, name="tablaCategoria"),
     path('tablaCategoria/(?P<id_categoria>)$', categoriaDelete, name="categoriaDelete"),
     path('tablaFavorito/', views.tableFavorito, name="tablaFavorito"),
+    path('tablaFavorito/(?P<id_favorito>)$', favoritoDelete, name="favoritoDelete"),
+    path('tablaTelefono/', views.tableTelefono, name="tablaTelefono"),
+    path('tablaGaleria/', views.tableGaleria, name="tablaGaleria"),
     path('registrarCategoria/', registrarCategoria, name="registarCategoria"),
     path('registrarLocal/', registrarLocal, name="registrarLocal"),
-
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('logout/', views.logout_view, name='logout')
+    path('logout/', views.logout_view, name='logout'),
+    path('localDelete/', views.localDelete, name='localDelete'),
+    path('editarLocal/', views.editarLocal, name='editarLocal')
     
 ]
 
 urlpatterns += [
     path('admin/', admin.site.urls),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

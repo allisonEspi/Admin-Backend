@@ -27,12 +27,14 @@ class Rolpermiso(models.Model):
         verbose_name_plural = "Rolpermisos"
 
 class Categoria(models.Model):
-     id_categoria = models.AutoField(db_column='id_Categoria', primary_key=True)  # Field name made lowercase.
-     tipo = models.CharField(max_length=12, blank=True, null=True)
-     descripcion = models.CharField(max_length=50, blank=True, null=True)
-     class Meta:
+    id_categoria = models.AutoField(db_column='id_Categoria', primary_key=True)  # Field name made lowercase.
+    tipo = models.CharField(max_length=12, blank=True, null=True)
+    descripcion = models.CharField(max_length=50, blank=True, null=True)
+    class Meta:
         verbose_name = 'Categoria'
         verbose_name_plural = "Categorias"
+    def __str__(self):
+        return self.tipo
 
 class Usuario(models.Model):
     email = models.CharField(primary_key=True, max_length=40)
@@ -46,6 +48,8 @@ class Usuario(models.Model):
     class Meta:
         verbose_name = 'Usuario'
         verbose_name_plural = "Usuarios"
+    def __str__(self):
+        return self.email
 
 class Local(models.Model):
     id_local =models.AutoField(db_column='id_Local', primary_key=True)
@@ -64,6 +68,8 @@ class Local(models.Model):
     class Meta:
         verbose_name = 'Local'
         verbose_name_plural = "Locales"
+    def __str__(self):
+        return self.nombre_comercial
 class Favorito(models.Model):
     id_favorito = models.AutoField(db_column='id_Favorito', primary_key=True)  # Field name made lowercase.
     id_local = models.ForeignKey(Local,on_delete=models.CASCADE,blank=True, null=True)
@@ -73,6 +79,8 @@ class Favorito(models.Model):
     class Meta:
         verbose_name = 'Favorito'
         verbose_name_plural = "Favoritos"
+    def __str__(self):
+        return self.id_favorito
 
 class Notificaciones(models.Model):
     id_notificacion = models.IntegerField(db_column='id_Notificacion', primary_key=True)  # Field name made lowercase.

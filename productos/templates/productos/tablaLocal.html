@@ -40,7 +40,9 @@
                             <td >{{o.id_local}}</td>
                             <td>{{o.nombre_comercial}}</td>
                             <td>{{o.descripcion}}</td>
-                            <td>{{o.src_logo}}</td>
+                            <td>
+                                <img src="http://localhost:8000{{ MEDIA_URL }}{{o.src_logo}}" alt="imagen">
+                            </td>
                             <td>{{o.likes}}</td>
                             <td>{{o.vistas}}</td>
                             <td>{{o.estrellas}}</td>
@@ -50,9 +52,14 @@
                             <td>{{o.latitud}}</td>
                             <td>{{o.adminLocal}}</td>
                             <td>
-                                <form  name="myform{{o.id_local}}" action="{% url 'localDelete' o.id_local %}">
+                                <!-- <form  name="myform{{o.id_local}}" action="{% url 'localDelete' o.id_local %}">
                                      <input type="button" class="btn-table" id="{{id_local}}" class="btn" onclick="confirmationMessage('{{o.id_local}}')" value="Eliminar" >
                                 </form>
+                                <a href="{% url 'localDelete' o.id_local %}">
+                                    <input type="button" class="btn floated" value="Modificar">
+                                </a> -->
+                                <button type="button" data-toggle="modal" data-target="#editar" data-id="{{o.id_local}}" data-nombre_comercial="{{o.nombre_comercial}}" data-likes="{{o.likes}}" data-vistas="{{o.vistas}}" data-estrellas="{{o.estrellas}}" data-direccion="{{o.direccion}}" data-categoria="{{o.categoria}}" data-longitud="{{o.longitud}}" data-latitud="{{o.latitud}}" data-adminLocal="{{o.adminLocal}}" data-descripcion="{{o.descripcion}}"><i class="fas fa-edit" ></i></button>
+                                <button type="button" data-toggle="modal" data-target="#eliminar" data-id="{{o.id_local}}"><i class="far fa-trash-alt"></i></button>
                             </td>
                         </tr>
                         {% endfor %} 
@@ -63,7 +70,162 @@
                     </tbody>
                 </table>
             </div>
+            <!-- aqui va el modal-->
+            <div class="modal fade" id="editar" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modalLabel">Editar Local</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="{% url 'editarLocal' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden"  id="local" name='local' class="btn">
+                        <div class="form-group">
+                            <label for="nombrec" class="col-form-label">Nombre Comercial</label>
+                            
+                              <input type="text" class="form-control" id="nombrec" name="nombrec">
+                            
+                          </div>
+                          <div class="form-group">
+                            <label for="descripcion" class=class="col-form-label">Descripcion</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="descripcion" name="descripcion">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="imagen" class="col-form-label">Imagen</label>
+                            <div class="col-sm-10">
+                              <!-- <input type="text" class="form-control" id="imagen" name="imagen"> -->
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="like" class=class="col-form-label">Like</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="like" name="like">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="estrella" class="col-form-label">Estrella</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="estrella" name="estrella">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="vista" class="col-form-label">Vistas</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="vista" name="vista">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="direccion" class="col-form-label">Direccion</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="direccion" name="direccion">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="latitud" class="col-form-label">latitud</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="latitud" name="latitud">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="longitud" class="col-form-label">longitud</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="longitud" name="longitud">
+                            </div>
+                          </div>
+                      
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                          Enviar
+                        </button>
+                        </form>
+                      </div>
+                    </div>
+                </div>
+              </div>  
+            <!-- Modal -->
+            <div class="modal fade" id="eliminar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Eliminar Local</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                    Estas Seguro de Eliminar Local
+                        <form  action="{% url 'localDelete' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden"  id="local" name='local' class="btn">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Aceptar</button>
+                        </form>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    
+                    </div>
+                </div>
+                </div>
+            </div>
+         
+
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {
+        $('#eliminar').on('show.bs.modal',function(event){
+            var button = $(event.relatedTarget)
+            var id_modal = button.data('id')
+            console.log(id_modal)
+            var modal = $(this)
+
+            modal.find('.modal-body #local').val(id_modal);
+            console.log(modal.find('.modal-body #local').val())
+        });
+    });
+</script>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {
+        $('#editar').on('show.bs.modal',function(event){
+            var button = $(event.relatedTarget)
+            var id_modal = button.data('id')
+            var nombrec=button.data('nombre_comercial')
+            var descripcion=button.data('descripcion')
+            var likes=button.data('likes')
+            var vistas=button.data('vistas')
+            var estrellas=button.data('estrellas')
+            var direccion=button.data('direccion')
+            var categoria=button.data('categoria')
+            var longitud=button.data('longitud')
+            var latitud=button.data('latitud')
+            var adminLocal=button.data('adminLocal')
+            console.log(id_modal)
+            var modal = $(this)
+
+            modal.find('.modal-body #local').val(id_modal);
+            modal.find('.modal-body #nombrec').val(nombrec);
+            modal.find('.modal-body #descripcion').val(descripcion);
+            modal.find('.modal-body #like').val(likes);
+            modal.find('.modal-body #estrella').val(estrellas);
+            modal.find('.modal-body #vista').val(vistas);
+            modal.find('.modal-body #direccion').val(direccion);
+            modal.find('.modal-body #longitud').val(longitud);
+            modal.find('.modal-body #latitud').val(latitud);
+
+
+            
+
+
+            console.log(modal.find('.modal-body #local').val())
+        });
+    });
+</script>
 {% endblock %}
