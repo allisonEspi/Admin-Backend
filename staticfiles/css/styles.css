@@ -188,6 +188,7 @@ figure {
 img {
   vertical-align: middle;
   border-style: none;
+  width: 150px;
 }
 
 svg {
@@ -3323,6 +3324,7 @@ input[type=button].btn-block {
   width: 1%;
   min-width: 0;
   margin-bottom: 0;
+  background: #edeef0;
 }
 .input-group > .form-control + .form-control,
 .input-group > .form-control + .custom-select,
@@ -6143,7 +6145,7 @@ button.bg-danger:focus {
 }
 
 .bg-light {
-  background-color: #f8f9fa !important;
+  background-color: #fff !important;
 }
 
 a.bg-light:hover, a.bg-light:focus,
@@ -7601,6 +7603,7 @@ button.bg-dark:focus {
 .mt-4,
 .my-4 {
   margin-top: 1.5rem !important;
+  
 }
 
 .mr-4,
@@ -9936,6 +9939,7 @@ blockquote {
 
   thead {
     display: table-header-group;
+    background: linear-gradient(-135deg, #6e37d3,  #3076e8 );
   }
 
   tr,
@@ -10091,9 +10095,11 @@ body {
   z-index: 1039;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav {
-  width: 300px;
+  width: 225px;
   height: 100vh;
   z-index: 1038;
+  border-right-style: outset;
+  border-color: #f3b0ff;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav .sb-sidenav {
   padding-top: 56px;
@@ -10102,7 +10108,7 @@ body {
   overflow-y: auto;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_content {
-  padding-left: 300px;
+  padding-left: 225px;
   top: 56px;
 }
 
@@ -10154,6 +10160,7 @@ body {
 }
 .sb-sidenav .sb-sidenav-menu {
   flex-grow: 1;
+  background: #edeef0;
 }
 .sb-sidenav .sb-sidenav-menu .nav {
   flex-direction: column;
@@ -10210,9 +10217,7 @@ body {
 }
 .sb-sidenav-dark .sb-sidenav-menu .nav-link:hover {
   color: #fff;
-}
-.sb-sidenav-dark .sb-sidenav-menu .nav-link.active {
-  color: #fff;
+  background-color: #BA68C8;
 }
 .sb-sidenav-dark .sb-sidenav-menu .nav-link.active .sb-nav-link-icon {
   color: #fff;
@@ -10238,7 +10243,8 @@ body {
   color: #adb5bd;
 }
 .sb-sidenav-light .sb-sidenav-menu .nav-link:hover {
-  color: #007bff;
+  color: #4A148C;
+  background-color: #BA68C8;
 }
 .sb-sidenav-light .sb-sidenav-menu .nav-link.active {
   color: #007bff;
@@ -10248,4 +10254,12 @@ body {
 }
 .sb-sidenav-light .sb-sidenav-footer {
   background-color: #e9ecef;
+}
+
+#imagen{
+  display:none
+}
+
+td img{
+  width: 50px;
 }

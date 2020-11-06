@@ -73,6 +73,8 @@ TEMPLATES = [
     },
 ]
 
+AUTH_USER_MODEL = 'productos.User'
+
 WSGI_APPLICATION = 'realidadoxxo.wsgi.application'
 
 

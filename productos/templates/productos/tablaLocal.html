@@ -25,6 +25,7 @@
                             <th>Numero de Visitas</th>
                             <th>Estrellas</th>
                             <th>Direccion</th>
+                            <th>Slogan</th>
                             <th>Categoria</th>
                             <th>Longitud</th>
                             <th>Latitud</th>
@@ -34,7 +35,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {%if locales %}
+                        {% if locales %}
                         {% for o in locales %}
                         <tr >
                             <td >{{o.id_local}}</td>
@@ -49,6 +50,7 @@
                             <td>{{o.direccion}}</td>
                             <td>{{o.categoria}}</td>
                             <td>{{o.longitud}}</td>
+                            <td>{{o.slogan}}</td>
                             <td>{{o.latitud}}</td>
                             <td>{{o.adminLocal}}</td>
                             <td>
@@ -58,7 +60,12 @@
                                 <a href="{% url 'localDelete' o.id_local %}">
                                     <input type="button" class="btn floated" value="Modificar">
                                 </a> -->
-                                <button type="button" data-toggle="modal" data-target="#editar" data-id="{{o.id_local}}" data-nombre_comercial="{{o.nombre_comercial}}" data-likes="{{o.likes}}" data-vistas="{{o.vistas}}" data-estrellas="{{o.estrellas}}" data-direccion="{{o.direccion}}" data-categoria="{{o.categoria}}" data-longitud="{{o.longitud}}" data-latitud="{{o.latitud}}" data-adminLocal="{{o.adminLocal}}" data-descripcion="{{o.descripcion}}"><i class="fas fa-edit" ></i></button>
+                                <button type="button" data-toggle="modal" data-target="#editar" data-id="{{o.id_local}}"
+                                 data-nombre_comercial="{{o.nombre_comercial}}" data-likes="{{o.likes}}" 
+                                 data-vistas="{{o.vistas}}" data-estrellas="{{o.estrellas}}" 
+                                 data-direccion="{{o.direccion}}" data-categoria="{{o.categoria}}" 
+                                 data-longitud="{{o.longitud}}" data-latitud="{{o.latitud}}" data-adminLocal="{{o.adminLocal}}"
+                                 data-descripcion="{{o.descripcion}}" data-slogan="{{o.slogan}}"><i class="fas fa-edit" ></i></button>
                                 <button type="button" data-toggle="modal" data-target="#eliminar" data-id="{{o.id_local}}"><i class="far fa-trash-alt"></i></button>
                             </td>
                         </tr>
@@ -86,9 +93,7 @@
                         <input type="hidden"  id="local" name='local' class="btn">
                         <div class="form-group">
                             <label for="nombrec" class="col-form-label">Nombre Comercial</label>
-                            
                               <input type="text" class="form-control" id="nombrec" name="nombrec">
-                            
                           </div>
                           <div class="form-group">
                             <label for="descripcion" class=class="col-form-label">Descripcion</label>
@@ -97,8 +102,16 @@
                             </div>
                           </div>
                           <div class="form-group">
+                            <label for="slogan" class="col-form-label">Slogan</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="slogan" name="slogan">
+                            </div>
+                          </div>
+                          <div class="form-group">
                             <label for="imagen" class="col-form-label">Imagen</label>
                             <div class="col-sm-10">
+                              <button type="button" class="btn btn-primary" id="btn-imagen" >Seleccionar Imagen</button>
+                               <input type="file" class="form-control" id="imagen" name="imagen">
                               <!-- <input type="text" class="form-control" id="imagen" name="imagen"> -->
                             </div>
                           </div>
@@ -127,13 +140,13 @@
                             </div>
                           </div>
                           <div class="form-group">
-                            <label for="latitud" class="col-form-label">latitud</label>
+                            <label for="latitud" class="col-form-label">Latitud</label>
                             <div class="col-sm-10">
                               <input type="text" class="form-control" id="latitud" name="latitud">
                             </div>
                           </div>
                           <div class="form-group">
-                            <label for="longitud" class="col-form-label">longitud</label>
+                            <label for="longitud" class="col-form-label">Longitud</label>
                             <div class="col-sm-10">
                               <input type="text" class="form-control" id="longitud" name="longitud">
                             </div>
@@ -199,13 +212,14 @@
             var id_modal = button.data('id')
             var nombrec=button.data('nombre_comercial')
             var descripcion=button.data('descripcion')
+            var slogan=button.data('slogan')
             var likes=button.data('likes')
-            var vistas=button.data('vistas')
             var estrellas=button.data('estrellas')
+            var vistas=button.data('vistas')
             var direccion=button.data('direccion')
-            var categoria=button.data('categoria')
             var longitud=button.data('longitud')
             var latitud=button.data('latitud')
+            var categoria=button.data('categoria')
             var adminLocal=button.data('adminLocal')
             console.log(id_modal)
             var modal = $(this)
@@ -213,12 +227,15 @@
             modal.find('.modal-body #local').val(id_modal);
             modal.find('.modal-body #nombrec').val(nombrec);
             modal.find('.modal-body #descripcion').val(descripcion);
+            modal.find('.modal-body #slogan').val(slogan);
             modal.find('.modal-body #like').val(likes);
             modal.find('.modal-body #estrella').val(estrellas);
             modal.find('.modal-body #vista').val(vistas);
             modal.find('.modal-body #direccion').val(direccion);
             modal.find('.modal-body #longitud').val(longitud);
             modal.find('.modal-body #latitud').val(latitud);
+            modal.find('.modal-body #categoria').val(categoria);
+            
 
 
             
