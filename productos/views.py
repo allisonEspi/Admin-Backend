@@ -108,25 +108,25 @@ def index(request):
 
 def tablaUsuario(request):
     #obtener permisos en base al rol anteriro
-    #lpermisos = obtenerPermisos(user)
+    lpermisos = obtenerPermisos(request.user)
     user = User.objects.all()
-    contexto = {'usuarios': user }
+    contexto = {'usuarios': user ,'permisos': lpermisos }
     return render(request, 'productos/tablaUsuario.html', contexto)
 
 
 def tablaLocal(request):
     #obtener permisos en base al rol anteriro
-    #lpermisos = obtenerPermisos(user)
+    lpermisos = obtenerPermisos(request.user)
     local = Local.objects.all()
-    contexto = {'locales': local }
+    contexto = {'locales': local,'permisos': lpermisos  }
     return render(request, 'productos/tablaLocal.html', contexto)
 
 
 def tableCategoria(request):
     #obtener permisos en base al rol anteriro    
-    #lpermisos = obtenerPermisos(user)
+    lpermisos = obtenerPermisos(request.user)
     categoria = Categoria.objects.all()
-    contexto = {'categorias': categoria }
+    contexto = {'categorias': categoria,'permisos': lpermisos  }
     return render(request, 'productos/tablaCategoria.html', contexto)
 
 
@@ -138,16 +138,16 @@ def tableFavorito(request):
 
 def tableTelefono(request):
     #obtener permisos en base al rol anteriro
-    lpermisos = obtenerPermisos(user)    
+    lpermisos = obtenerPermisos(request.user)    
     telefono = Telefono.objects.all()
     contexto = {'telefonos': telefono,'permisos': lpermisos }
     return render(request, 'productos/tablaTelefono.html', contexto)
 
 
 def tableGaleria(request):
-    #lpermisos = obtenerPermisos(user)
+    lpermisos = obtenerPermisos(request.user)
     galeria = Galeria.objects.all()
-    contexto = {'galerias': galeria}
+    contexto = {'galerias': galeria ,'permisos': lpermisos}
     return render(request, 'productos/tablaGaleria.html', contexto)
 def tableGaleria2(request):
 
@@ -246,6 +246,7 @@ def logout_view(request):
 
 @login_required(login_url='/')
 def registrarCategoria(request):
+    lpermisos = obtenerPermisos(request.user)
     if request.method == 'POST':
         if(request.POST.get("tipo") != None and request.POST.get("descripcion") != None):
             categoria = Categoria(tipo=request.POST.get(
@@ -260,6 +261,7 @@ def registrarCategoria(request):
 
 @login_required(login_url='/')
 def registrarLocal(request):
+    lpermisos = obtenerPermisos(request.user)
     if request.method == 'POST':
         if(request.POST.get("estrella") != None and request.POST.get("slogan") != None and request.POST.get("latitud") != None and request.POST.get("longitud") != None and request.POST.get("vista") != None and request.POST.get("direccion") != None and request.POST.get("nombrec") != None and request.POST.get("like") != None and request.POST.get("descripcion") != None and request.POST.get("imagen") != None):
             local = Local(latitud=request.POST.get("latitud"), estrellas=request.POST.get("estrella"), longitud=request.POST.get("longitud"), slogan=request.POST.get("slogan"), vistas=request.POST.get(
@@ -269,11 +271,12 @@ def registrarLocal(request):
             return render(request, 'productos/crear/crearLocal.html')
         return HttpResponse(status=404)
     if request.method == 'GET':
-        return render(request, 'productos/crear/crearLocal.html', {"categorias": Categoria.objects.all()})
+        return render(request, 'productos/crear/crearLocal.html', {"categorias": Categoria.objects.all(),'permisos': lpermisos})
 
 
 @login_required(login_url='/')
 def editarLocal(request):
+    lpermisos = obtenerPermisos(request.user)
     if request.method == 'POST':
         local = Local.objects.get(id_local=request.POST['local'])
         if(request.POST['nombrec'] != None or request.POST['nombrec'] != ''):
@@ -297,11 +300,12 @@ def editarLocal(request):
         if(bool(request.FILES.get('imagen', False)) == True):
             local.src_logo = request.FILES['imagen']
         local.save()
-    return render(request, 'productos/tablaLocal.html', {"locales": Local.objects.all()})
+    return render(request, 'productos/tablaLocal.html', {"locales": Local.objects.all(),'permisos': lpermisos})
 
 
 @login_required(login_url='/')
 def registrarUsuario(request):
+    lpermisos = obtenerPermisos(request.user)
     if request.method == 'POST':
         if(request.POST.get("email") != None and request.POST.get("nombre") != None and request.POST.get("apellido") != None and request.POST.get("contrasena") != None and request.POST.get("telefono") != None and request.POST.get("imagen") != None):
             rol = Rol.objects.all().filter(id_rol=request.POST.get("rol")).first()
@@ -312,7 +316,7 @@ def registrarUsuario(request):
             return render(request, 'productos/crear/crearUsuario.html')
         return HttpResponse(status=404)
     if request.method == 'GET':
-        return render(request, 'productos/crear/crearUsuario.html', {"roles": Rol.objects.all()})
+        return render(request, 'productos/crear/crearUsuario.html', {"roles": Rol.objects.all(),'permisos': lpermisos})
 
 
 @login_required(login_url='/')
