@@ -15,6 +15,7 @@ from django.contrib.auth import logout
 from .serializers import *
 from .models import *
 from django.db.models import F
+from django.contrib.auth.hashers import make_password
 
 #from .serializers import UserSerializer, GroupSerializer,TCategoriaSerializer,TComentarioSerializer,TEscaneosSerializer,TFavoritoSerializer,TGaleriaSerializer,TLocalSerializer,TNotificacionesSerializer,TPermisoSerializer,TRolSerializer,TRolpermisoSerializer,TTelefonoSerializer,TUsuarioSerializer
 #from .models import Categoria,Comentario,Escaneos,Favorito,Galeria,Local,Notificaciones,Permiso,Rol,Rolpermiso,Telefono,User
@@ -106,20 +107,26 @@ def index(request):
 
 
 def tablaUsuario(request):
+    #obtener permisos en base al rol anteriro
+    #lpermisos = obtenerPermisos(user)
     user = User.objects.all()
-    contexto = {'usuarios': user}
+    contexto = {'usuarios': user }
     return render(request, 'productos/tablaUsuario.html', contexto)
 
 
 def tablaLocal(request):
+    #obtener permisos en base al rol anteriro
+    #lpermisos = obtenerPermisos(user)
     local = Local.objects.all()
-    contexto = {'locales': local}
+    contexto = {'locales': local }
     return render(request, 'productos/tablaLocal.html', contexto)
 
 
 def tableCategoria(request):
+    #obtener permisos en base al rol anteriro    
+    #lpermisos = obtenerPermisos(user)
     categoria = Categoria.objects.all()
-    contexto = {'categorias': categoria}
+    contexto = {'categorias': categoria }
     return render(request, 'productos/tablaCategoria.html', contexto)
 
 
@@ -130,20 +137,27 @@ def tableFavorito(request):
 
 
 def tableTelefono(request):
+    #obtener permisos en base al rol anteriro
+    lpermisos = obtenerPermisos(user)    
     telefono = Telefono.objects.all()
-    contexto = {'telefonos': telefono}
+    contexto = {'telefonos': telefono,'permisos': lpermisos }
     return render(request, 'productos/tablaTelefono.html', contexto)
 
 
 def tableGaleria(request):
+    #lpermisos = obtenerPermisos(user)
     galeria = Galeria.objects.all()
     contexto = {'galerias': galeria}
     return render(request, 'productos/tablaGaleria.html', contexto)
 def tableGaleria2(request):
+
+
     galeria = Galeria.objects.all()
     contexto = {'galerias': galeria}
     return render(request, 'productos/tablaGaleria2.html', contexto)
 def localDelete(request):
+
+
     if request.method == "POST":
         local = Local.objects.get(id_local=request.POST.get('local'))
         local.delete()
@@ -202,12 +216,8 @@ def login(request):
                 # Y le redireccionamos a la portada
                 # return redirect('registroNoticias/')
 
-                #obtener rol del usuario logueado
-                rol = User.objects.all().select_related('id_rol').filter(
-                    email=user).values('id_rol')[0]['id_rol']
                 #obtener permisos en base al rol anteriro
-                lpermisos = obtenerPermisos(rol)
-                print(lpermisos)
+                lpermisos = obtenerPermisos(user)
 
                 return render(request, "productos/index.html", {'permisos': lpermisos })
 
@@ -219,7 +229,8 @@ def login(request):
     # Si llegamos al final renderizamos el formulario
     return render(request, "productos/login.html", {'form': form, 'mensaje': ""})
 
-def obtenerPermisos(rol):
+def obtenerPermisos(user):
+    rol = User.objects.all().select_related('id_rol').filter(email=user).values('id_rol')[0]['id_rol']
     dic = Rolpermiso.objects.all().filter(id_rol=rol).values(permiso=F('id_permiso__id_permiso'))
     l = []
     for i in dic:
@@ -293,8 +304,9 @@ def editarLocal(request):
 def registrarUsuario(request):
     if request.method == 'POST':
         if(request.POST.get("email") != None and request.POST.get("nombre") != None and request.POST.get("apellido") != None and request.POST.get("contrasena") != None and request.POST.get("telefono") != None and request.POST.get("imagen") != None):
+            rol = Rol.objects.all().filter(id_rol=request.POST.get("rol")).first()
             usuario = User(username=request.POST.get("email").split('@')[0], email=request.POST.get("email"), nombres=request.POST.get("nombre"), first_name=request.POST.get("nombre"), contrasena=request.POST.get(
-                "contrasena"), password=request.POST.get("contrasena"), telefono=request.POST.get("telefono"), apellidos=request.POST.get("apellido"), last_name=request.POST.get("apellido"), src_imagen=request.POST.get('imagen'))
+                "contrasena"), password=make_password(request.POST.get("contrasena")), telefono=request.POST.get("telefono"), apellidos=request.POST.get("apellido"), last_name=request.POST.get("apellido"), src_imagen=request.POST.get('imagen'),id_rol=rol)
             usuario.save()
             # return HttpResponse(status=200)
             return render(request, 'productos/crear/crearUsuario.html')
