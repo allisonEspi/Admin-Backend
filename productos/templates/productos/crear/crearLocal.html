@@ -5,7 +5,7 @@
 {% block main%}
 <br />
 <div class="container">
-<form action="{% url 'registrarLocal' %}" method="POST">
+<form action="{% url 'registrarLocal' %}" method="POST"  enctype="multipart/form-data">
     {% csrf_token %}
   <div class="form-group row">
     <label for="nombrec" class="col-sm-2 col-form-label">Nombre Comercial</label>

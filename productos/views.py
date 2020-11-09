@@ -12,6 +12,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import logout
+from django.contrib import messages #import messages
 from .serializers import *
 from .models import *
 from django.db.models import F
@@ -275,13 +276,14 @@ def registrarCategoria(request):
 def registrarLocal(request):
     lpermisos = obtenerPermisos(request.user)
     if request.method == 'POST':
-        if(request.POST.get("estrella") != None and request.POST.get("slogan") != None and request.POST.get("latitud") != None and request.POST.get("longitud") != None and request.POST.get("vista") != None and request.POST.get("direccion") != None and request.POST.get("nombrec") != None and request.POST.get("like") != None and request.POST.get("descripcion") != None and request.POST.get("imagen") != None):
+        if(request.POST.get("estrella") != None and request.POST.get("slogan") != None and request.POST.get("latitud") != None and request.POST.get("longitud") != None and request.POST.get("vista") != None and request.POST.get("direccion") != None and request.POST.get("nombrec") != None and request.POST.get("like") != None and request.POST.get("descripcion") != None and request.FILES["imagen"] != None):
             local = Local(latitud=request.POST.get("latitud"), estrellas=request.POST.get("estrella"), longitud=request.POST.get("longitud"), slogan=request.POST.get("slogan"), vistas=request.POST.get(
-                "vista"), descripcion=request.POST.get("descripcion"), likes=request.POST.get("like"), direccion=request.POST.get("direccion"), nombre_comercial=request.POST.get("nombrec"), src_logo=request.POST.get('imagen'))
+                "vista"), descripcion=request.POST.get("descripcion"), likes=request.POST.get("like"), direccion=request.POST.get("direccion"), nombre_comercial=request.POST.get("nombrec"), src_logo=request.FILES['imagen'])
             local.save()
             # return HttpResponse(status=200)
             return render(request, 'productos/crear/crearLocal.html',{'permisos': lpermisos })
-        return HttpResponse(status=404)
+        #return HttpResponse(status=404)
+        return redirect(tablaLocal)
     if request.method == 'GET':
         return render(request, 'productos/crear/crearLocal.html', {"categorias": Categoria.objects.all()})
 
@@ -324,9 +326,11 @@ def registrarUsuario(request):
             usuario = User(username=request.POST.get("email").split('@')[0], email=request.POST.get("email"), nombres=request.POST.get("nombre"), first_name=request.POST.get("nombre"), contrasena=request.POST.get(
                 "contrasena"), password=make_password(request.POST.get("contrasena")), telefono=request.POST.get("telefono"), apellidos=request.POST.get("apellido"), last_name=request.POST.get("apellido"), src_imagen=request.FILES['imagen'],id_rol=rol)
             usuario.save()
+            #return redirect(tablaUsuario)
             # return HttpResponse(status=200)
             return render(request, 'productos/crear/crearUsuario.html',{'permisos': lpermisos })
-        return redirect(registrarUsuario)
+        else:    
+            messages.warning(request, 'No se pudo registrar Usuario.')
     if request.method == 'GET':
         return render(request, 'productos/crear/crearUsuario.html', {"roles": Rol.objects.all()})
 
@@ -346,7 +350,8 @@ def editarUsuario(request):
         if(request.POST['telefono'] != None or request.POST['telefono'] != ''):
             usuario.telefono = request.POST['telefono']
         # if(request.POST['id_rol']!=None or request.POST['id_rol']!=''):
-     #       usuario.id_rol=request.POST['id_rol']
+            
+        #    usuario.id_rol=rol
         if(bool(request.FILES.get('imagen', False)) == True):
             usuario.src_imagen = request.FILES['imagen']
         usuario.save()
@@ -356,10 +361,11 @@ def editarUsuario(request):
 
 @login_required(login_url='/')
 def usuarioDelete(request):
+    lpermisos = obtenerPermisos(request.user)
     if request.method == "POST":
         usuario = User.objects.get(email=request.POST.get('email'))
         usuario.delete()
-    return render(request, 'productos/tablaUsuario.html', {"usuarios": User.objects.all()})
+    return render(request, 'productos/tablaUsuario.html', {"usuarios": User.objects.all() ,'permisos': lpermisos})
 
 
 def registrarPublicidad(request):
