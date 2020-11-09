@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from productos import views
 from productos.views import *
+from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 #from productos.views import CategoriaViewSet,ComentarioViewSet,EscaneosViewSet,FavoritoViewSet,GaleriaViewSet,LocalViewSet,NotificacionesViewSet,PermisoViewSet,RolViewSet,RolpermisoViewSet,TelefonoViewSet,UsuarioViewSet,tablaLocal
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
@@ -52,8 +53,10 @@ urlpatterns = [
     path('localDelete/', views.localDelete, name='localDelete'),
     path('usuarioDelete/', views.usuarioDelete, name='usuarioDelete'),
     path('editarLocal/', views.editarLocal, name='editarLocal'),
-    path('editarUsuario/', views.editarUsuario, name='editarUsuario')
-    
+    path('editarUsuario/', views.editarUsuario, name='editarUsuario'),
+    #RECUPERACION DE CORREO
+    #path('reinicio-contrasena/',PasswordResetView,{'template_name':'password/password_reset_form.html','email_template':'password/password_reset_email.html'}, name='password_reset'),
+    path('reset/password_reset', PasswordResetView.as_view(template_name='productos/password/password_reset_form.html', email_template_name="productos/password/password_reset_email.html"), name = 'password_reset'),
 ]
 
 urlpatterns += [
