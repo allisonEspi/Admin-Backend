@@ -6,6 +6,8 @@ from django.conf.urls.static import static
 from django.conf import settings
 from productos import views
 from productos.views import *
+from django.urls import re_path
+from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 #from productos.views import CategoriaViewSet,ComentarioViewSet,EscaneosViewSet,FavoritoViewSet,GaleriaViewSet,LocalViewSet,NotificacionesViewSet,PermisoViewSet,RolViewSet,RolpermisoViewSet,TelefonoViewSet,UsuarioViewSet,tablaLocal
 router = routers.DefaultRouter()
@@ -55,8 +57,12 @@ urlpatterns = [
     path('editarLocal/', views.editarLocal, name='editarLocal'),
     path('editarUsuario/', views.editarUsuario, name='editarUsuario'),
     #RECUPERACION DE CORREO
-    #path('reinicio-contrasena/',PasswordResetView,{'template_name':'password/password_reset_form.html','email_template':'password/password_reset_email.html'}, name='password_reset'),
-    path('reset/password_reset', PasswordResetView.as_view(template_name='productos/password/password_reset_form.html', email_template_name="productos/password/password_reset_email.html"), name = 'password_reset'),
+    
+    
+    path('reset_password/', auth_views.PasswordResetView.as_view(template_name = "productos/password/password_reset_form.html"), name ='password_reset'),
+    path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name = "productos/password/password_reset_done.html"), name ='password_reset_done'),
+    path('reset/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(template_name = "productos/password/password_reset_confirms.html"), name ='password_reset_confirm'),
+    path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(template_name = "productos/password/password_reset_complete.html"), name ='password_reset_complete')
 ]
 
 urlpatterns += [

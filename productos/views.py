@@ -18,6 +18,8 @@ from .serializers import *
 from .models import *
 from django.db.models import F
 from django.contrib.auth.hashers import make_password
+from django.core.mail import send_mail
+from django.conf import settings
 
 #from .serializers import UserSerializer, GroupSerializer,TCategoriaSerializer,TComentarioSerializer,TEscaneosSerializer,TFavoritoSerializer,TGaleriaSerializer,TLocalSerializer,TNotificacionesSerializer,TPermisoSerializer,TRolSerializer,TRolpermisoSerializer,TTelefonoSerializer,TUsuarioSerializer
 #from .models import Categoria,Comentario,Escaneos,Favorito,Galeria,Local,Notificaciones,Permiso,Rol,Rolpermiso,Telefono,User
@@ -275,18 +277,19 @@ def registrarCategoria(request):
 
 @login_required(login_url='/')
 def registrarLocal(request):
-    lpermisos = obtenerPermisos(request.user)
     if request.method == 'POST':
         if(request.POST.get("estrella") != None and request.POST.get("slogan") != None and request.POST.get("latitud") != None and request.POST.get("longitud") != None and request.POST.get("vista") != None and request.POST.get("direccion") != None and request.POST.get("nombrec") != None and request.POST.get("like") != None and request.POST.get("descripcion") != None and request.FILES["imagen"] != None):
             local = Local(latitud=request.POST.get("latitud"), estrellas=request.POST.get("estrella"), longitud=request.POST.get("longitud"), slogan=request.POST.get("slogan"), vistas=request.POST.get(
                 "vista"), descripcion=request.POST.get("descripcion"), likes=request.POST.get("like"), direccion=request.POST.get("direccion"), nombre_comercial=request.POST.get("nombrec"), src_logo=request.FILES['imagen'])
             local.save()
             # return HttpResponse(status=200)
-            return render(request, 'productos/crear/crearLocal.html',{'permisos': lpermisos })
+            #return render(request, 'productos/crear/crearLocal.html',{'permisos': lpermisos })
+            return redirect(tablaLocal)
         #return HttpResponse(status=404)
         return redirect(tablaLocal)
     if request.method == 'GET':
-        return render(request, 'productos/crear/crearLocal.html', {"categorias": Categoria.objects.all()})
+        lpermisos = obtenerPermisos(request.user)
+        return render(request, 'productos/crear/crearLocal.html', {"categorias": Categoria.objects.all(),'permisos': lpermisos})
 
 
 @login_required(login_url='/')
@@ -319,7 +322,7 @@ def editarLocal(request):
 
 @login_required(login_url='/')
 def registrarUsuario(request):
-    lpermisos = obtenerPermisos(request.user)
+    #lpermisos = obtenerPermisos(request.user)
     print(request.method)
     if request.method == 'POST':
         if(request.POST.get("email") != None and request.POST.get("nombre") != None and request.POST.get("apellido") != None and request.POST.get("contrasena") != None and request.POST.get("telefono") != None and request.FILES["imagen"] != None):
@@ -327,13 +330,14 @@ def registrarUsuario(request):
             usuario = User(username=request.POST.get("email").split('@')[0], email=request.POST.get("email"), nombres=request.POST.get("nombre"), first_name=request.POST.get("nombre"), contrasena=request.POST.get(
                 "contrasena"), password=make_password(request.POST.get("contrasena")), telefono=request.POST.get("telefono"), apellidos=request.POST.get("apellido"), last_name=request.POST.get("apellido"), src_imagen=request.FILES['imagen'],id_rol=rol)
             usuario.save()
-            #return redirect(tablaUsuario)
+            return redirect(tablaUsuario)
             # return HttpResponse(status=200)
-            return render(request, 'productos/crear/crearUsuario.html',{'permisos': lpermisos })
+            #return render(request, 'productos/crear/crearUsuario.html',{'permisos': lpermisos })
         else:    
             messages.warning(request, 'No se pudo registrar Usuario.')
     if request.method == 'GET':
-        return render(request, 'productos/crear/crearUsuario.html', {"roles": Rol.objects.all()})
+        lpermisos = obtenerPermisos(request.user)
+        return render(request, 'productos/crear/crearUsuario.html', {"roles": Rol.objects.all(), 'permisos': lpermisos})
 
 
 @login_required(login_url='/')
@@ -378,4 +382,5 @@ def registrarPublicidad(request):
             return render(request, 'productos/crear/crearPublicidad.html')
         return HttpResponse(status=404)
     if request.method == 'GET':
-        return render(request, 'productos/crear/crearPublicidad.html')
+        lpermisos = obtenerPermisos(request.user)
+        return render(request, 'productos/crear/crearPublicidad.html',{'permisos': lpermisos})
