@@ -27,6 +27,7 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
+			{%block carta%}
 				<div class="login100-pic js-tilt" data-tilt>
 					<img src="{% static 'images/imagen.png' %}" alt="IMG">
 				</div>
@@ -63,8 +64,8 @@
 						<span class="txt1">
 							Recuperar Contraseña
 						</span>
-						<a class="txt2" href="#">
-							Username / Password?
+						<a class="txt2" href="{% url 'password_reset' %}">
+							Password?
 						</a>
 					</div>
 
@@ -75,6 +76,7 @@
 						</a>
 					</div> {% endcomment %}
 				</form>
+			{% endblock %}
 			</div>
 		</div>
 	</div>
