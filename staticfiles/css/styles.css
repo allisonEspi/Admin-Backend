@@ -10093,6 +10093,7 @@ body {
 }
 .sb-nav-fixed .sb-topnav {
   z-index: 1039;
+  background: #f7f7f8;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav {
   width: 225px;
@@ -10171,6 +10172,7 @@ body {
   font-size: 0.75rem;
   font-weight: bold;
   text-transform: uppercase;
+  background: linear-gradient(-135deg, #3076e8, #6e37d3);
 }
 .sb-sidenav .sb-sidenav-menu .nav .nav-link {
   display: flex;
@@ -10247,10 +10249,10 @@ body {
   background-color: #BA68C8;
 }
 .sb-sidenav-light .sb-sidenav-menu .nav-link.active {
-  color: #007bff;
+  color: #1c1e21;
 }
 .sb-sidenav-light .sb-sidenav-menu .nav-link.active .sb-nav-link-icon {
-  color: #007bff;
+  color: #1c1e21;
 }
 .sb-sidenav-light .sb-sidenav-footer {
   background-color: #e9ecef;
@@ -10262,4 +10264,9 @@ body {
 
 td img{
   width: 50px;
+}
+.form-control{
+  border-radius: 50px;
+  border-color:#000;
+  border-width: 2px;
 }
