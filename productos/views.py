@@ -100,6 +100,10 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = TUsuarioSerializer
 
+class UsuarioAPPViewSet(viewsets.ModelViewSet):
+    queryset = UserAPP.objects.all()
+    serializer_class = TUsuarioAPPSerializer
+
 
 class PublicidadViewSet(viewsets.ModelViewSet):
     queryset = Publicidad.objects.all()
@@ -207,36 +211,20 @@ def galeriaDelete(request, id_contenido):
 
 @csrf_exempt
 def login(request):
-    # Creamos el formulario de autenticación vacío
-    print("hola mundo")
-    #user = authenticate(username="chjoguer", password='zywcCQAmPf')
-   # print(user)
     form = AuthenticationForm()
     if request.method == "POST":
-        # Añadimos los datos recibidos al formulario
         form = AuthenticationForm(data=request.POST)
-        # Si el formulario es válido...
         if form.is_valid():
-            # Recuperamos las credenciales validadas
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            # Verificamos las credenciales del usuario
             user = authenticate(username=username, password=password)
             print("verificando")
-
-            # Si existe un usuario con ese nombre y contraseña
             if user is not None:
-                # Hacemos el login manualmente
                 do_login(request, user)
                 print("si existe")
-                # Y le redireccionamos a la portada
-                # return redirect('registroNoticias/')
-
-                #obtener permisos en base al rol anteriro
                 lpermisos = obtenerPermisos(user)
-
+                print(lpermisos)
                 return render(request, "productos/index.html", {'permisos': lpermisos })
-
         else:
             print(form.is_valid())
             print("Password o usuario incorrecto")
@@ -262,17 +250,17 @@ def logout_view(request):
 
 @login_required(login_url='/')
 def registrarCategoria(request):
-    lpermisos = obtenerPermisos(request.user)
     if request.method == 'POST':
         if(request.POST.get("tipo") != None and request.POST.get("descripcion") != None):
             categoria = Categoria(tipo=request.POST.get(
                 "tipo"), descripcion=request.POST.get("descripcion"))
             categoria.save()
             # return HttpResponse(status=200)
-            return render(request, 'productos/crear/crearCategoria.html')
+            return redirect(tablaCategoria)
         return HttpResponse(status=404)
     if request.method == 'GET':
-        return render(request, 'productos/crear/crearCategoria.html')
+        lpermisos = obtenerPermisos(request.user)
+        return render(request, 'productos/crear/crearCategoria.html',{'permisos': lpermisos})
 
 
 @login_required(login_url='/')
@@ -372,7 +360,7 @@ def usuarioDelete(request):
         usuario.delete()
     return render(request, 'productos/tablaUsuario.html', {"usuarios": User.objects.all() ,'permisos': lpermisos})
 
-
+@login_required(login_url='/')
 def registrarPublicidad(request):
     if request.method == 'POST':
         if(request.POST.get("descripcion") != None):
@@ -384,3 +372,4 @@ def registrarPublicidad(request):
     if request.method == 'GET':
         lpermisos = obtenerPermisos(request.user)
         return render(request, 'productos/crear/crearPublicidad.html',{'permisos': lpermisos})
+

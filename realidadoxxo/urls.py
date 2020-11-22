@@ -25,6 +25,7 @@ router.register(r'rol', RolViewSet)
 router.register(r'rolpermiso', RolpermisoViewSet)
 router.register(r'telefono', TelefonoViewSet)
 router.register(r'usuario', UsuarioViewSet)
+router.register(r'usuarioAPP', UsuarioAPPViewSet)
 router.register(r'publicidad', PublicidadViewSet)
 
 

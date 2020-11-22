@@ -58,6 +58,10 @@ class TUsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model= User
         fields='__all__'
+class TUsuarioAPPSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= UserAPP
+        fields='__all__'
 class TPublicidadSerializer(serializers.ModelSerializer):
     class Meta:
         model= Publicidad
