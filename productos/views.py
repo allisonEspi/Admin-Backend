@@ -1,6 +1,11 @@
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.hashers import make_password
+from rest_framework import authentication, permissions
 from rest_framework import viewsets
+from rest_framework import status
+from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
@@ -12,6 +17,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import logout
+from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.contrib import messages #import messages
 from .serializers import *
@@ -372,4 +378,32 @@ def registrarPublicidad(request):
     if request.method == 'GET':
         lpermisos = obtenerPermisos(request.user)
         return render(request, 'productos/crear/crearPublicidad.html',{'permisos': lpermisos})
-
+@api_view(["PUT"])
+@csrf_exempt
+def update_favorito(request, favorito_id):
+    user = request.user.id
+    payload = json.loads(request.body)
+    try:
+        favorito_item = Favorito.objects.filter(added_by=user, id=favorito_id)
+        # returns 1 or 0
+        favorito_item.update(**payload)
+        favorito = Favorito.objects.get(id=favorito_id)
+        serializer = TFavoritoSerializer(favorito)
+        return JsonResponse({'favorito': serializer.data}, safe=False, status=status.HTTP_200_OK)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+@login_required(login_url='/')
+def registrarNotificaciones(request):
+    if request.method == 'POST':
+        if(request.POST.get("alcance") != None and request.POST.get("notificacion") != None):
+            notificacion = Notificaciones(alcance=request.POST.get(
+                "alcance"), notificacion=request.POST.get("notificacion"))
+            notificacion.save()
+            # return HttpResponse(status=200)
+            return redirect(tablaCategoria)
+        return HttpResponse(status=404)
+    if request.method == 'GET':
+        lpermisos = obtenerPermisos(request.user)
+        return render(request, 'productos/crear/crearNotificacion.html',{'permisos': lpermisos})

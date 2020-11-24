@@ -51,12 +51,14 @@ urlpatterns = [
     path('registrarLocal/', registrarLocal, name="registrarLocal"),
     path('registrarUsuario/', registrarUsuario, name="registrarUsuario"),
     path('registrarPublicidad/', registrarPublicidad, name="registrarPublicidad"),
+    path('registrarNotificaciones/', registrarNotificaciones, name="registrarNotificaciones"),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('logout/', views.logout_view, name='logout'),
     path('localDelete/', views.localDelete, name='localDelete'),
     path('usuarioDelete/', views.usuarioDelete, name='usuarioDelete'),
     path('editarLocal/', views.editarLocal, name='editarLocal'),
     path('editarUsuario/', views.editarUsuario, name='editarUsuario'),
+    path('updatefavorito/<int:favorito_id>', views.update_favorito),
     #RECUPERACION DE CORREO
     
     

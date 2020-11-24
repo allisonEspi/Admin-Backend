@@ -20,9 +20,9 @@
 <body class="sb-nav-fixed">
     {% block nav %}
     <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
-        <a class="navbar-brand" href="index.html"><img src="{% static 'images/logo_negro.png' %}" alt="IMG"></a>
         <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i
                 class="fas fa-bars"></i></button>
+        <img src="{% static 'images/logo_negro.png' %}" alt="IMG" id="logo">
         <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
             <div class="input-group">
                 <input class="form-control" type="text" placeholder="Search for..." aria-label="Search"
@@ -56,9 +56,8 @@
             <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading" style="padding-bottom: 28; height: 175px;"><a href="#" >
-                        <img  class="img logo rounded-circle mb-5" src="{% static 'images/usuario.png' %}" alt="IMG" style="height: 145px;">
-                        </a>
+                        <div class="sb-sidenav-menu-heading" style="padding-bottom: 28; height: 175px;">
+                        <img  class="img logo rounded-circle mb-5" src="{% static 'images/usuario.png' %}" alt="IMG" id="avatar">
                         </div>
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Usuarios"
                             aria-expanded="false" aria-controls="collapseLayouts">
