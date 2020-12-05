@@ -16,8 +16,47 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
         crossorigin="anonymous"></script>
 </head>
+{% load pwa %}
+{% progressive_web_app_meta %}
+    <body class="sb-nav-fixed">
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-app.js"></script>
 
-<body class="sb-nav-fixed">
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+            https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-analytics.js"></script>
+
+        <script>
+            var firebaseConfig = {
+                apiKey: "AIzaSyDrgbMlUhQtWO00ksVYJfL8mQj2pOs6eSE",
+                authDomain: "loginturistview.firebaseapp.com",
+                databaseURL: "https://loginturistview.firebaseio.com",
+                projectId: "loginturistview",
+                storageBucket: "loginturistview.appspot.com",
+                messagingSenderId: "963572973633",
+                appId: "1:963572973633:web:6699aa8f0b6632f8e206c0",
+                measurementId: "G-4LWMSYFGLK"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            let messaging=firebase.messaging();
+            navigator.serviceWorker.register("/sw.js").them(function(register){
+                messaging.useServiceWorker(register);
+                messaging.requestPermission()
+                .them(function(){
+                    console.log("El usuario ha aceptado recibir notificaciones ")
+                })
+                .catch(function(e){
+                    console.log("El usuario no ha aceptado")
+                })
+
+            })
+            //programar la recepcion de notificaciones 
+            messaging.onMessage(function(payload){
+                let title='titulo de la notificacion '
+            })
+
+        </script>
     {% block nav %}
     <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
         <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i

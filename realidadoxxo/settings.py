@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'productos',
     'rest_framework',
     'corsheaders',
-    'bootstrap4'
+    'bootstrap4',
+    'pwa',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +155,5 @@ STATICFILES_DIRS = [
 ]
 MEDIA_URL = '/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media/images/')
+
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'sw.js')
