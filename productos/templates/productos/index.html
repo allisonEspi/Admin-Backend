@@ -28,23 +28,28 @@
 
         <script>
             var firebaseConfig = {
-                apiKey: "AIzaSyDrgbMlUhQtWO00ksVYJfL8mQj2pOs6eSE",
-                authDomain: "loginturistview.firebaseapp.com",
-                databaseURL: "https://loginturistview.firebaseio.com",
-                projectId: "loginturistview",
-                storageBucket: "loginturistview.appspot.com",
-                messagingSenderId: "963572973633",
-                appId: "1:963572973633:web:6699aa8f0b6632f8e206c0",
-                measurementId: "G-4LWMSYFGLK"
-            };
-            // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
-            let messaging=firebase.messaging();
+            apiKey: "AIzaSyDrgbMlUhQtWO00ksVYJfL8mQj2pOs6eSE",
+            authDomain: "loginturistview.firebaseapp.com",
+            databaseURL: "https://loginturistview.firebaseio.com",
+            projectId: "loginturistview",
+            storageBucket: "loginturistview.appspot.com",
+            messagingSenderId: "963572973633",
+            appId: "1:963572973633:web:6699aa8f0b6632f8e206c0",
+            measurementId: "G-4LWMSYFGLK"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        let messaging=firebase.messaging();
             navigator.serviceWorker.register("/sw.js").them(function(register){
                 messaging.useServiceWorker(register);
                 messaging.requestPermission()
                 .them(function(){
                     console.log("El usuario ha aceptado recibir notificaciones ")
+                    return messaging.getToken();
+                })
+                .them(function(token){
+                    console.log(token);
+                   
                 })
                 .catch(function(e){
                     console.log("El usuario no ha aceptado")
@@ -54,13 +59,17 @@
             //programar la recepcion de notificaciones 
             messaging.onMessage(function(payload){
                 let title='titulo de la notificacion '
-            })
+                let options={
+                    body:"este es el mensaje"
+                }
+                let mensaje=new Notificacion(title,options);
+            });
 
         </script>
     {% block nav %}
     <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
-        <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i
-                class="fas fa-bars"></i></button>
+        {% comment %} <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i
+                class="fas fa-bars"></i></button> {% endcomment %}
         <img src="{% static 'images/logo_negro.png' %}" alt="IMG" id="logo">
         <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
             <div class="input-group">
@@ -95,8 +104,11 @@
             <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading" style="padding-bottom: 28; height: 175px;">
+                        <div class="sb-sidenav-menu-heading" >
                         <img  class="img logo rounded-circle mb-5" src="{% static 'images/usuario.png' %}" alt="IMG" id="avatar">
+                        {% if user.is_authenticated %}
+                        <p>{{ user.get_username }}</p>
+                        {% endif %}
                         </div>
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Usuarios"
                             aria-expanded="false" aria-controls="collapseLayouts">
@@ -222,12 +234,12 @@
                         </a>
                     </div>
                 </div>
-                <div class="sb-sidenav-footer">
+                {% comment %} <div class="sb-sidenav-footer">
                     <div class="small">Inicio sesion como:</div>
                     {% if user.is_authenticated %}
                     <p>Bienvenido, {{ user.get_username }}</p>
                     {% endif %}
-                </div>
+                </div> {% endcomment %}
             </nav>
             {% endblock  %}
         </div>

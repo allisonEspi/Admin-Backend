@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'bootstrap4',
     'pwa',
+    'fcm_django'
 ]
 
 MIDDLEWARE = [
@@ -157,3 +158,17 @@ MEDIA_URL = '/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media/images/')
 
 PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'sw.js')
+
+FCM_DJANGO_SETTINGS = {
+         # default: _('FCM Django')
+        "APP_VERBOSE_NAME": "turistView",
+         # Your firebase API KEY
+        "FCM_SERVER_KEY": "AIzaSyDrgbMlUhQtWO00ksVYJfL8mQj2pOs6eSE",
+         # true if you want to have only one active device per registered user at a time
+         # default: False
+        "ONE_DEVICE_PER_USER": False,
+         # devices to which notifications cannot be sent,
+         # are deleted upon receiving error response from FCM
+         # default: False
+        "DELETE_INACTIVE_DEVICES": True,
+}
