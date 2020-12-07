@@ -26,6 +26,13 @@ from django.db.models import F
 from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
 from django.conf import settings
+from django.views.decorators.http import require_http_methods
+from django.http import HttpResponse,HttpResponseBadRequest
+from django.core import serializers
+import json
+from fcm_django.models import FCMDevice
+
+
 
 #from .serializers import UserSerializer, GroupSerializer,TCategoriaSerializer,TComentarioSerializer,TEscaneosSerializer,TFavoritoSerializer,TGaleriaSerializer,TLocalSerializer,TNotificacionesSerializer,TPermisoSerializer,TRolSerializer,TRolpermisoSerializer,TTelefonoSerializer,TUsuarioSerializer
 #from .models import Categoria,Comentario,Escaneos,Favorito,Galeria,Local,Notificaciones,Permiso,Rol,Rolpermiso,Telefono,User
@@ -173,6 +180,12 @@ def tableGaleria2(request):
     galeria = Galeria.objects.all()
     contexto = {'galerias': galeria,'permisos': lpermisos}
     return render(request, 'productos/tablaGaleria2.html', contexto)
+def notificaciones(request):
+    #obtener permisos en base al rol anteriro    
+    lpermisos = obtenerPermisos(request.user)
+    notificacion = Notificaciones.objects.all()
+    contexto = {'notificaciones': notificacion,'permisos': lpermisos}
+    return render(request, 'productos/notificaciones.html', contexto)
 def localDelete(request):
     #obtener permisos en base al rol anteriro    
     lpermisos = obtenerPermisos(request.user)
@@ -311,6 +324,11 @@ def editarLocal(request):
         if(bool(request.FILES.get('imagen', False)) == True):
             local.src_logo = request.FILES['imagen']
         local.save()
+        dispositivos=FCMDevice.objects.filter(active=True)
+        dospositivos.send_message(
+            title="pelicula agregada"+request.POST['nombrec'],
+            body="se ha agregado la pelicula"
+        )
     return render(request, 'productos/tablaLocal.html', {"locales": Local.objects.all()})
 
 
@@ -407,3 +425,23 @@ def registrarNotificaciones(request):
     if request.method == 'GET':
         lpermisos = obtenerPermisos(request.user)
         return render(request, 'productos/crear/crearNotificacion.html',{'permisos': lpermisos})
+@csrf_exempt
+@require_http_methods(['POST'])
+def guardar_token(request):
+    body=request.body.decode('utf-8')
+    bodyDict=json.loads(body)
+    token=bodyDict['token']
+    existe=FCMDevice.objects.filter(registration_id=token,active=True)
+    if len(existe)>0:
+        return HttpResponseBadRequest(json.dumps({'mensaje':'el token ya existe'}))
+    dispositivo=FCMDevice()
+    dispositivo.registration_id=token
+    dispositivo.active=True
+    #si el usuario esta logeado procede a enlazar
+    if request.user.is_authenticated:
+        dispositivo.user=request.user
+    try:
+        dispositivo.save()
+        return HttpResponse(json.dumps({'mensaje':'no se ha podido guardar'}))
+    except:
+        return HttpResponseBadRequest(json.dumps({'mensaje':'no se ha podido guardar'}))

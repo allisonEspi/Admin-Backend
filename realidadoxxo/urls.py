@@ -47,6 +47,7 @@ urlpatterns = [
     path('tablaTelefono/', views.tableTelefono, name="tablaTelefono"),
     path('tablaGaleria/', views.tableGaleria, name="tablaGaleria"),
     path('tablaGaleria2/', views.tableGaleria2, name="tablaGaleria2"),
+     path('notificaciones/', views.notificaciones, name="notificaciones"),
     path('registrarCategoria/', registrarCategoria, name="registrarCategoria"),
     path('registrarLocal/', registrarLocal, name="registrarLocal"),
     path('registrarUsuario/', registrarUsuario, name="registrarUsuario"),
@@ -59,6 +60,7 @@ urlpatterns = [
     path('editarLocal/', views.editarLocal, name='editarLocal'),
     path('editarUsuario/', views.editarUsuario, name='editarUsuario'),
     path('updatefavorito/<int:favorito_id>', views.update_favorito),
+    path('guardar-token/',guardar_token,name='guardar-token'),
     #RECUPERACION DE CORREO
     
     

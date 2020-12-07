@@ -38,26 +38,32 @@ self.addEventListener('fetch', function(event) {
      
     );
 });
-//codigo para notificaciones push
-importScripts('https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/7.20.0/firebase-messaging.js');
+
+importScripts('https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/3.9.0/firebase-messaging.js');
+
 var firebaseConfig = {
-    apiKey: "AIzaSyDrgbMlUhQtWO00ksVYJfL8mQj2pOs6eSE",
-    authDomain: "loginturistview.firebaseapp.com",
-    databaseURL: "https://loginturistview.firebaseio.com",
-    projectId: "loginturistview",
-    storageBucket: "loginturistview.appspot.com",
-    messagingSenderId: "963572973633",
-    appId: "1:963572973633:web:6699aa8f0b6632f8e206c0",
-    measurementId: "G-4LWMSYFGLK"
+  apiKey: "AIzaSyDrgbMlUhQtWO00ksVYJfL8mQj2pOs6eSE",
+  authDomain: "loginturistview.firebaseapp.com",
+  databaseURL: "https://loginturistview.firebaseio.com",
+  projectId: "loginturistview",
+  storageBucket: "loginturistview.appspot.com",
+  messagingSenderId: "963572973633",
+  appId: "1:963572973633:web:4069f66df53a0482e206c0",
+  measurementId: "G-6JXN6LZ039"
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 let messaging=firebase.messaging();
-messaging.setBackgroundMessageHandler(function(payload){
-    let title='titulo de la notificacion '
-    let options={
-        body:"este es el mensaje"
-    }
-    self.registration.showNotification(title,options)
+getStartToken();
+messaging.onBackgroundMessage(function(payload) {
+  console.log('[firebase-messaging-sw.js] Received background message ', payload);
+  // Customize notification here
+  const notificationTitle = 'Background Message Title';
+  const notificationOptions = {
+    body: 'Background Message body.',
+    
+  };
+  self.registration.showNotification(notificationTitle,
+    notificationOptions);
 });
