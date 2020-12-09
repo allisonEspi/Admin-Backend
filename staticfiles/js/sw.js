@@ -1,3 +1,6 @@
+importScripts('https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/3.9.0/firebase-messaging.js');
+
 var CACHE_NAME = 'turistview-v1';
 var urlsToCache = [
     '/',
@@ -39,9 +42,6 @@ self.addEventListener('fetch', function(event) {
     );
 });
 
-importScripts('https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/3.9.0/firebase-messaging.js');
-
 var firebaseConfig = {
   apiKey: "AIzaSyDrgbMlUhQtWO00ksVYJfL8mQj2pOs6eSE",
   authDomain: "loginturistview.firebaseapp.com",
@@ -55,8 +55,8 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 let messaging=firebase.messaging();
-getStartToken();
-messaging.onBackgroundMessage(function(payload) {
+//getStartToken();
+/*messaging.onBackgroundMessage(function(payload) {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
   // Customize notification here
   const notificationTitle = 'Background Message Title';
@@ -66,4 +66,4 @@ messaging.onBackgroundMessage(function(payload) {
   };
   self.registration.showNotification(notificationTitle,
     notificationOptions);
-});
+});*/

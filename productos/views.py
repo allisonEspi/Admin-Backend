@@ -177,7 +177,13 @@ def tableGaleria(request):
 def tableGaleria2(request):
     #obtener permisos en base al rol anteriro    
     lpermisos = obtenerPermisos(request.user)
-    galeria = Galeria.objects.all()
+    locales = []
+    user = User.objects.filter(email=request.user).first()
+    local = Local.objects.filter(adminLocal=user).all()#filtras que locales tiene ese usuario
+    for i in local:
+        if i.id_local not in locales:
+            locales.append(i.id_local)
+    galeria = Galeria.objects.filter(id_local__in=locales)
     contexto = {'galerias': galeria,'permisos': lpermisos}
     return render(request, 'productos/tablaGaleria2.html', contexto)
 def notificaciones(request):
@@ -243,7 +249,7 @@ def login(request):
                 print("si existe")
                 lpermisos = obtenerPermisos(user)
                 print(lpermisos)
-                return render(request, "productos/index.html", {'permisos': lpermisos })
+                return redirect("/tablaLocal")
         else:
             print(form.is_valid())
             print("Password o usuario incorrecto")

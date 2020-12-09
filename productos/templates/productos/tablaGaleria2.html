@@ -11,13 +11,9 @@
     <div class="row">
     
     {% for o in galerias %}
-            <div class="col-6 col-md-4">
+            <div class="col-4 col-md-3">
                 <div class="card">
-                    <img src="img_avatar.png" alt="Avatar" style="width:100%">
-                    <div class="container">
-                        <h4><b> {{o.id_local}}</b></h4>
-                        <p>Cree una Card</p>
-                    </div>
+                    <img src="http://localhost:8000{{ MEDIA_URL }}{{o.src_path}}" alt="Avatar" style="width:100%">
                 </div>
              </div>
     {% endfor %} 

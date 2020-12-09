@@ -248,4 +248,4 @@ class Publicidad(models.Model):
         verbose_name_plural = "Publicidades"
 
     def __str__(self):
-        return self.id_publicidad
+        return str(self.id_publicidad)
